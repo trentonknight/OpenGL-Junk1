@@ -24,7 +24,7 @@ GLFWwindow* window;
 
 ReadShader readshader;
 readshader.readTheFile(shadeFrag);
-readshader.readTheFile(vertFrag);
+///readshader.readTheFile(vertFrag);
 
 glfwSetErrorCallback(error_callback);
 

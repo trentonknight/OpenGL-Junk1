@@ -34,7 +34,7 @@ int ReadShader::readTheFile(string name)
 		cout << "Cannot open shader file! " << endl;
 		return 1;
 	}
-	for(int a=0; a < 255; a++){
+	while(in){
 	in >> shaderContainer;
 	cout << shaderContainer << endl;
 	}
