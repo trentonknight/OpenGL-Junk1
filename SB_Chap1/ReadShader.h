@@ -3,6 +3,8 @@
 #include <istream>
 #include <cstdlib>
 #include <string>
+#include <GL/glew.h>
+
 
 using namespace std;
 
@@ -26,7 +28,8 @@ return len;
 
 int ReadShader::readTheFile(string name)
 {
-	char shaderContainer[255];
+	GLchar shaderContainer[255] = {0};
+	int index;
 
 	ifstream in(name.c_str());
 
@@ -35,8 +38,9 @@ int ReadShader::readTheFile(string name)
 		return 1;
 	}
 	while(in){
-	in >> shaderContainer;
-	cout << shaderContainer << endl;
+	in >> shaderContainer[index];
+	cout << shaderContainer[index] << endl;
+	index++;
 	}
 	in .close();
 	return 0;
