@@ -24,7 +24,7 @@ GLchar shadeArray[255] = {0};
 GLFWwindow* window;
 
 ReadShader readshader;
-//readshader.readTheFile(shadeFrag);
+readshader.readTheFile(shadeFrag);
 ///readshader.readTheFile(vertFrag);
 
 glfwSetErrorCallback(error_callback);

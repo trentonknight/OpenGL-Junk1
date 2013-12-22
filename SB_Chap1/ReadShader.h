@@ -6,11 +6,13 @@
 #include <GL/glew.h>
 
 
+
 using namespace std;
 
 class ReadShader{
 public:
 int readTheFile(string name);
+private:
 int importTheFileSource(GLchar *source);
 };
 
@@ -19,8 +21,8 @@ int importTheFileSource(GLchar *source);
 int ReadShader::readTheFile(string name)
 {
 	///variables for character array reading from shader text file
-	GLchar shaderContainer[255] = {0};
-	int index;
+	GLchar shaderContainer[300] = {0};
+	GLuint program = 0;
 	///variables for handling shader compilation
 
         ///stream text from shader file
@@ -31,24 +33,26 @@ int ReadShader::readTheFile(string name)
 		return 1;
 	}
 	while(in){
-	in >> shaderContainer[index];
-	cout << shaderContainer[index] << endl;
-	index++;
+	in >> shaderContainer;
+	cout << shaderContainer << endl;
 	}
 	in .close();
 	///stream closed now use character array
 	importTheFileSource(shaderContainer);
-
-
+        
 	return 0;
 }
 int ReadShader::importTheFileSource(GLchar *source)
 {
-	GLuint shader;
+	GLuint shader = 0;
+	GLuint program = 0;
 	const GLchar *newSource = source;
 	shader = glCreateShader(GL_VERTEX_SHADER);
   	glShaderSource(shader, 1, &newSource, NULL);
         glCompileShader(shader);
-
+	program = glCreateProgram();
+	glAttachShader(program,shader);
+        glLinkProgram(program);
+	glDeleteShader(shader);
 	return 0;
 }
