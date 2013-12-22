@@ -50,7 +50,8 @@ cout << glewGetErrorString(err);
 }
 //calling shaders after glfw context is a success.
 ReadShader readshader;
-mainProgram = readshader.readTheFile(shadeFrag);
+mainProgram = readshader.readTheFile(shadeFrag,9);
+//glGenVertexArrays(1,&vertex_array_object);
 cout << "Status: Using GLEW " << glewGetString(GLEW_VERSION);
 
 /* Loop until the user closes the window */
