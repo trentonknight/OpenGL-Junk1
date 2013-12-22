@@ -50,10 +50,11 @@ if (GLEW_OK != err)
 cout << glewGetErrorString(err);
 }
 //calling shaders after glfw context is a success.
-ReadShader readshader;
+ReadShader loadmyshaders;
 //mainProgram = readshader.readTheFile(shadeFrag,0,0);
-mainProgram = readshader.readTheFile(shadeVert,1,1);
-glGetProgramiv(mainProgram, GL_LINK_STATUS, &shaderAmount);
+//mainProgram = readshader.readTheFile(shadeVert,1,1);
+mainProgram = loadmyshaders.loadAllShaders(shadeFrag,shadeVert,"NULL","NULL","NULL","NULL");
+glGetProgramiv(mainProgram, GL_ATTACHED_SHADERS, &shaderAmount);
 
 //may need to move this call from the header to here: glLinkProgram(mainProgram);
 //glGenVertexArrays(1,&vertex_array_object);

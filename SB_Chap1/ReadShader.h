@@ -11,14 +11,35 @@ using namespace std;
 
 class ReadShader{
 public:
-GLuint readTheFile(string name, int shaderType, int finalShader);
+GLuint loadAllShaders(string frag, string vertex, string compute, string tess_control, string tess_eval, string geometry);
+GLuint readTheFile(string name, int shaderType);
 private:
-GLuint importTheFileSource(GLchar *source, int shaderType, int finalShader);
+GLuint importTheFileSource(GLchar *source, int shaderType);
 };
 
+GLuint ReadShader::loadAllShaders(string frag, string vertex, string compute, string tess_control, string tess_eval, string geometry)
+{
+	GLuint program = 0;
+	GLint shaderAmount = 0;
+
+	if(frag != "NULL"){
+		readTheFile(frag,0);
+	}
+	if(vertex != "NULL"){
+	readTheFile(vertex,1);
+	}
+        glLinkProgram(program);
+	glGetProgramiv(program, GL_ATTACHED_SHADERS, &shaderAmount);
+	cout << "program linked in header: " << shaderAmount << endl;
+
+	//glDeleteShader(shader);
+
+	return program;
+}
 
 
-GLuint ReadShader::readTheFile(string name, int shaderType, int finalShader)
+
+GLuint ReadShader::readTheFile(string name, int shaderType)
 {
 	///variables for character array reading from shader text file
 	GLchar shaderContainer[300] = {0};
@@ -38,11 +59,11 @@ GLuint ReadShader::readTheFile(string name, int shaderType, int finalShader)
 	}
 	in .close();
 	///stream closed now use character array
-	program = importTheFileSource(shaderContainer,shaderType,finalShader);
+	program = importTheFileSource(shaderContainer,shaderType);
         
 	return program;
 }
-GLuint ReadShader::importTheFileSource(GLchar *source, int shaderType, int finalShader)
+GLuint ReadShader::importTheFileSource(GLchar *source, int shaderType)
 {
 	GLuint shader;
 	GLuint program = 0;
@@ -81,11 +102,6 @@ GLuint ReadShader::importTheFileSource(GLchar *source, int shaderType, int final
   	glShaderSource(shader, 1, &newSource, NULL);
         glCompileShader(shader);
 	program = glCreateProgram();
-	cout << "finalShader: " << finalShader << endl;
 	glAttachShader(program,shader);
-	if(finalShader == 1){
-        glLinkProgram(program);
-	glDeleteShader(shader);
-	}
 	return program;
 }
