@@ -18,9 +18,10 @@ glfwSetWindowShouldClose(window, GL_TRUE);
 int main(void)
 {
 string shadeFrag = "test.frag";
-string vertFrag = "test.vert";
+string shadeVert = "test.vert";
 GLchar shadeArray[255] = {0};
 GLuint mainProgram = 0;
+GLint shaderAmount = 0;
 
 GLFWwindow* window;
 
@@ -50,10 +51,14 @@ cout << glewGetErrorString(err);
 }
 //calling shaders after glfw context is a success.
 ReadShader readshader;
-mainProgram = readshader.readTheFile(shadeFrag,9);
-//glGenVertexArrays(1,&vertex_array_object);
-cout << "Status: Using GLEW " << glewGetString(GLEW_VERSION);
+//mainProgram = readshader.readTheFile(shadeFrag,0,0);
+mainProgram = readshader.readTheFile(shadeVert,1,1);
+glGetProgramiv(mainProgram, GL_LINK_STATUS, &shaderAmount);
 
+//may need to move this call from the header to here: glLinkProgram(mainProgram);
+//glGenVertexArrays(1,&vertex_array_object);
+cout << "Status: Using GLEW " << glewGetString(GLEW_VERSION) << endl;
+cout << "shaderAmount listed: " << shaderAmount << endl;
 /* Loop until the user closes the window */
 while (!glfwWindowShouldClose(window))
 {

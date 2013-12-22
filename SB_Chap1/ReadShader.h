@@ -11,14 +11,14 @@ using namespace std;
 
 class ReadShader{
 public:
-GLuint readTheFile(string name, int shaderType);
+GLuint readTheFile(string name, int shaderType, int finalShader);
 private:
-GLuint importTheFileSource(GLchar *source, int shaderType);
+GLuint importTheFileSource(GLchar *source, int shaderType, int finalShader);
 };
 
 
 
-GLuint ReadShader::readTheFile(string name, int shaderType)
+GLuint ReadShader::readTheFile(string name, int shaderType, int finalShader)
 {
 	///variables for character array reading from shader text file
 	GLchar shaderContainer[300] = {0};
@@ -38,11 +38,11 @@ GLuint ReadShader::readTheFile(string name, int shaderType)
 	}
 	in .close();
 	///stream closed now use character array
-	program = importTheFileSource(shaderContainer,shaderType);
+	program = importTheFileSource(shaderContainer,shaderType,finalShader);
         
 	return program;
 }
-GLuint ReadShader::importTheFileSource(GLchar *source,int shaderType)
+GLuint ReadShader::importTheFileSource(GLchar *source, int shaderType, int finalShader)
 {
 	GLuint shader;
 	GLuint program = 0;
@@ -81,8 +81,11 @@ GLuint ReadShader::importTheFileSource(GLchar *source,int shaderType)
   	glShaderSource(shader, 1, &newSource, NULL);
         glCompileShader(shader);
 	program = glCreateProgram();
+	cout << "finalShader: " << finalShader << endl;
 	glAttachShader(program,shader);
+	if(finalShader == 1){
         glLinkProgram(program);
 	glDeleteShader(shader);
+	}
 	return program;
 }
