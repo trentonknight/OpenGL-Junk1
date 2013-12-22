@@ -23,8 +23,6 @@ GLchar shadeArray[255] = {0};
 
 GLFWwindow* window;
 
-ReadShader readshader;
-readshader.readTheFile(shadeFrag);
 ///readshader.readTheFile(vertFrag);
 
 glfwSetErrorCallback(error_callback);
@@ -49,6 +47,9 @@ if (GLEW_OK != err)
 /* Problem: glewInit failed, something is seriously wrong. */
 cout << glewGetErrorString(err);
 }
+//calling shaders after glfw context is a success.
+ReadShader readshader;
+readshader.readTheFile(shadeFrag);
 cout << "Status: Using GLEW " << glewGetString(GLEW_VERSION);
 
 /* Loop until the user closes the window */
@@ -61,7 +62,7 @@ glfwGetFramebufferSize(window, &width, &height);
 ratio = width / (float) height;
 glViewport(0, 0, width, height);
 static const GLfloat color[] = {1.0f, 0.0f, 0.0f, 1.0f};
-//glClearColor(1.0f, 0.0f,0.0f,1.0f);
+glClearColor(1.0f, 0.0f,0.0f,1.0f);
 glClearBufferfv(GL_COLOR, 0 ,color);
 //glClear(GL_COLOR_BUFFER_BIT);
 glEnd();

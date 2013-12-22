@@ -44,16 +44,15 @@ int ReadShader::readTheFile(string name)
 }
 int ReadShader::importTheFileSource(GLchar *source)
 {
-	GLuint shader;
+	GLuint shader = 0;
 	GLuint program = 0;
-	GLenum err = glewInit();
 	const GLchar *newSource = source;
-	shader = glCreateShader(GL_FRAGMENT_SHADER);
-  	glShaderSource(shader, 1, &newSource, NULL);
-        glCompileShader(shader);
-	program = glCreateProgram();
-	glAttachShader(program,shader);
-        glLinkProgram(program);
-	glDeleteShader(shader);
+	shader = glCreateShader(GL_VERTEX_SHADER);
+  	//glShaderSource(shader, 1, &newSource, NULL);
+        //glCompileShader(shader);
+	//program = glCreateProgram();
+	//glAttachShader(program,shader);
+        //glLinkProgram(program);
+	//glDeleteShader(shader);
 	return 0;
 }
