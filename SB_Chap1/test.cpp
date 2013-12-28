@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include "ReadShader.h"
+#include <ReadShader.h>
 using namespace std;
 static void error_callback(int error, const char* description)
 {
@@ -19,9 +19,7 @@ int main(void)
 {
 string shadeFrag = "test.frag";
 string shadeVert = "test.vert";
-GLchar shadeArray[255] = {0};
 GLuint mainProgram = 0;
-GLint shaderAmount = 0;
 
 GLFWwindow* window;
 
@@ -50,17 +48,10 @@ if (GLEW_OK != err)
 cout << glewGetErrorString(err);
 }
 //calling shaders after glfw context is a success.
-ReadShader loadmyshaders;
-//mainProgram = readshader.readTheFile(shadeFrag,0,0);
-//mainProgram = readshader.readTheFile(shadeVert,1,1);
-mainProgram = loadmyshaders.loadAllShaders(shadeFrag,shadeVert,"NULL","NULL","NULL","NULL");
-glGetProgramiv(mainProgram, GL_ATTACHED_SHADERS, &shaderAmount);
+ReadShader readshader;
+mainProgram = readshader.readTheFile(shadeFrag,0);
+mainProgram = readshader.readTheFile(shadeVert,1);
 
-//may need to move this call from the header to here: glLinkProgram(mainProgram);
-//glGenVertexArrays(1,&vertex_array_object);
-cout << "Status: Using GLEW " << glewGetString(GLEW_VERSION) << endl;
-cout << "shaderAmount listed: " << shaderAmount << endl;
-/* Loop until the user closes the window */
 while (!glfwWindowShouldClose(window))
 {
 float ratio;

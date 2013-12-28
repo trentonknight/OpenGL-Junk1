@@ -1,6 +1,8 @@
-#version 430 core
+#version 130
+
+attribute vec2 coord2d;
 
 void main(void)
 {
-gl_Position = vec4(0.0,0.0,0.5,1.0);
+	gl_Position = vec4(coord2d,0.0,1.0);
 }
