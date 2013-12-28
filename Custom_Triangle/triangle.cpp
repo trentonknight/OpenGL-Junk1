@@ -16,10 +16,19 @@ using namespace std;
 
 GLuint program;
 GLint attribute_coord2d;
+GLuint vbo_triangle;
 
 int init_resources()
 {
     ReadShader readshader;
+    GLfloat triangle_vertices[] = {
+        0.0,  0.8,
+        -0.8, -0.8,
+        0.8, -0.8,
+    };
+    glGenBuffers(1, &vbo_triangle);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
 
     GLint link_ok = GL_FALSE;
 
@@ -54,12 +63,8 @@ void onDisplay()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(program);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
     glEnableVertexAttribArray(attribute_coord2d);
-    GLfloat triangle_vertices[] = {
-        0.0,  0.8,
-        -0.8, -0.8,
-        0.8, -0.8,
-    };
     /* Describe our vertices array to OpenGL (it can't guess its format automatically) */
     glVertexAttribPointer(
         attribute_coord2d, // attribute
@@ -67,7 +72,7 @@ void onDisplay()
         GL_FLOAT,          // the type of each element
         GL_FALSE,          // take our values as-is
         0,                 // no extra data between each position
-        triangle_vertices  // pointer to the C array
+        0  // pointer to the C array
     );
 
     /* Push each element in buffer_vertices to the vertex shader */
@@ -80,12 +85,13 @@ void onDisplay()
 void free_resources()
 {
     glDeleteProgram(program);
+    glDeleteBuffers(1, &vbo_triangle);
 }
 
 
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_RGBA|GLUT_ALPHA|GLUT_DOUBLE|GLUT_DEPTH);
     glutInitWindowSize(640, 480);
     glutCreateWindow("Custom Triangle");
 
@@ -97,10 +103,13 @@ int main(int argc, char* argv[]) {
 
     if (!init_resources()) {
         glutDisplayFunc(onDisplay);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glutMainLoop();
     }
 
     free_resources();
     return 0;
 }
+
 
