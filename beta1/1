@@ -18,7 +18,7 @@ GLuint vertex_array_object;
 
 GLuint compile_shaders(void) {
 
-    GLint link_ok, vertex_ok, frag_ok = 0;
+    GLint link_ok, vertex_ok, frag_ok, shader_amt = 0;
 
 //vertex shader
     static const GLchar * vertex_shader_source[] =
@@ -78,6 +78,10 @@ GLuint compile_shaders(void) {
         cerr << "Program Link Error!" << endl;
         return EXIT_FAILURE;
     }
+    glGetProgramiv(program, GL_ATTACHED_SHADERS, &shader_amt)
+    if(shader_amt) {
+        cout << shader_amt << " shaders found in new program" << endl;
+    }
 
 //Delete the shaders as the program has them now
     glDeleteShader(vertex_shader);
@@ -101,10 +105,13 @@ void shutdown(void)
 }
 
 void render() {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(rendering_program);
-    glDrawArrays(GL_POINTS, 0, 1);
+    const GLfloat color[] = {(float)sin(4) * 0.5f + 0.5f,
+                             (float)cos(5) * 0.5f + 0.5f,
+                             0.0f, 1.0f
+                            };
+    glClearBufferfv(GL_COLOR, 0, color);
+    //glUseProgram(rendering_program);
+    //glDrawArrays(GL_POINTS, 0, 1);
 }
 
 int main(int argc, char* argv[])
