@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 
 /*This header file compiles shaders based on a int value given by the user. Look at the importTheFileSource function to get a idea of numerical values matched to shader types. An error will also be thrown if a unrecongnized value is submitted.*/
 /*********************************************************************
