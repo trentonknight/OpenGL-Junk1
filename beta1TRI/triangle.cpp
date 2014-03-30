@@ -15,6 +15,15 @@
 
 using namespace std;
 
+int ogl_versionck();
+void makeBuffer();
+int createAttributes();
+int attachShaders();
+int init_resources();
+void onDisplay();
+void free_resources();
+
+
 GLuint program;
 GLint attribute_coord2d, attribute_v_color;
 GLuint buffer;
@@ -57,15 +66,30 @@ void makeBuffer()
 		    triangle_vertices);
 
 
+
 }
 
-int init_resources()
+int createAttributes()
+{
+    const char* attribute_name = "coord2d";
+    attribute_coord2d = glGetAttribLocation(program, attribute_name);
+    if (attribute_coord2d == -1) {
+        cerr << "Could not bind attribute: " << attribute_name << endl;
+        return 0;
+    }
+    const char* attributeTwo_name = "v_color";
+    attribute_v_color = glGetAttribLocation(program, attributeTwo_name);
+    if (attribute_v_color == -1) {
+        cerr << "Could not bind attribute: " << attribute_name << endl;
+        return 0;
+    }
+
+
+}
+
+int attachShaders()
 {
     ReadShader readshader;
-    //create and buffer triangle vertices
-    ogl_versionck();
-    makeBuffer();
-
     GLint link_ok = GL_FALSE;
 
     GLuint vs = readshader.readTheFile("triangle.vert",1);
@@ -83,20 +107,14 @@ int init_resources()
         return 0;
     }
 
-    const char* attribute_name = "coord2d";
-    attribute_coord2d = glGetAttribLocation(program, attribute_name);
-    if (attribute_coord2d == -1) {
-        cerr << "Could not bind attribute: " << attribute_name << endl;
-        return 0;
-    }
-    const char* attributeTwo_name = "v_color";
-    attribute_v_color = glGetAttribLocation(program, attributeTwo_name);
-    if (attribute_v_color == -1) {
-        cerr << "Could not bind attribute: " << attribute_name << endl;
-        return 0;
-    }
+}
 
-
+int init_resources()
+{
+    ogl_versionck();
+    makeBuffer();
+    attachShaders();
+    createAttributes();
     return 0;
 }
 
