@@ -17,21 +17,45 @@ using namespace std;
 
 GLuint program;
 GLint attribute_coord2d, attribute_v_color;
-GLuint vbo_triangle, vbo_triangle_colors;
+GLuint buffer;
+
+int ogl_versionck()
+{
+	if(!GLEW_VERSION_2_0){
+		cout << "Your Graphics Card Does Not Support OpenGL 2.0\n" << endl;
+		return 1;
+	}
+}
 
 void makeBuffer()
 {
+
+
     GLfloat triangle_vertices[] = {
 	    0.0, 0.8,
 	    -0.8, -0.8,
 	    0.8, -0.8,
     };
-    glGenBuffers(1, &vbo_triangle);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
+    GLfloat triangle_colors[] = {
+	    1.0, 1.0, 0.0,
+	    0.0, 0.0, 1.0,
+	    1.0, 0.0, 0.0,
+    };
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER,
-		    sizeof(triangle_vertices),
-		    triangle_vertices,
+		    sizeof(triangle_vertices) + sizeof(triangle_colors),
+		    NULL,
 		    GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER,
+		    0,
+		    sizeof(triangle_vertices),
+		    triangle_vertices);
+    glBufferSubData(GL_ARRAY_BUFFER,
+		    sizeof(triangle_vertices),//offset
+		    sizeof(triangle_colors),
+		    triangle_vertices);
+
 
 }
 
@@ -39,6 +63,7 @@ int init_resources()
 {
     ReadShader readshader;
     //create and buffer triangle vertices
+    ogl_versionck();
     makeBuffer();
 
     GLint link_ok = GL_FALSE;
@@ -64,6 +89,12 @@ int init_resources()
         cerr << "Could not bind attribute: " << attribute_name << endl;
         return 0;
     }
+    const char* attributeTwo_name = "v_color";
+    attribute_v_color = glGetAttribLocation(program, attributeTwo_name);
+    if (attribute_v_color == -1) {
+        cerr << "Could not bind attribute: " << attribute_name << endl;
+        return 0;
+    }
 
 
     return 0;
@@ -77,7 +108,7 @@ void onDisplay()
     glUseProgram(program);
     //attribute stuff
     //call on buffered triangle
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glEnableVertexAttribArray(attribute_coord2d);
     /* Describe our vertices array to OpenGL (it can't guess its format automatically) */
     glVertexAttribPointer(
@@ -101,7 +132,7 @@ void onDisplay()
 void free_resources()
 {
     glDeleteProgram(program);
-    glDeleteBuffers(1, &vbo_triangle);
+    glDeleteBuffers(1, &buffer);
 }
 
 
