@@ -1,11 +1,7 @@
-#ifdef GL_ES_VERSION_2_0
-#version 100
-#else
-#version 120
-#endif
-attribute vec2 coord2d;
-void main(void) {
-  gl_Position = vec4(coord2d, 0.0, 1.0);
+#version 330
+
+in vec3 position;
+void main()
+{
+    gl_Position = vec4 (position, 1.0);
 }
-
-

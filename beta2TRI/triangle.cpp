@@ -17,7 +17,6 @@ using namespace std;
 
 int ogl_versionck();
 void makeBuffer();
-int createAttributes();
 int attachShaders();
 int init_resources();
 void onDisplay();
@@ -69,24 +68,6 @@ void makeBuffer()
 
 }
 
-int createAttributes()
-{
-    const char* attribute_name = "newPosition";
-    attribute_coord2d = glGetAttribLocation(program, attribute_name);
-    if (attribute_coord2d == -1) {
-        cerr << "Could not bind attribute: " << attribute_name << endl;
-        return 0;
-    }
-    const char* attributeTwo_name = "v_color";
-    attribute_v_color = glGetAttribLocation(program, attributeTwo_name);
-    if (attribute_v_color == -1) {
-        cerr << "Could not bind attribute: " << attribute_name << endl;
-        return 0;
-    }
-
-
-}
-
 int attachShaders()
 {
     ReadShader readshader;
@@ -114,7 +95,6 @@ int init_resources()
     ogl_versionck();
     makeBuffer();
     attachShaders();
-    createAttributes();
     return 0;
 }
 
@@ -124,22 +104,26 @@ void onDisplay()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(program);
+    //attribute stuff
     //call on buffered triangle
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glEnableVertexAttribArray(attribute_coord2d);
+    //glEnableVertexAttribArray(attribute_coord2d);
     /* Describe our vertices array to OpenGL (it can't guess its format automatically) */
-    glVertexAttribPointer(
-        attribute_coord2d, // attribute
-        2,                 // number of elements per vertex, here (x,y)
-        GL_FLOAT,          // the type of each element
-        GL_FALSE,          // take our values as-is
-        0,//sizeof(struct attributes),// no extra data between each position
-	0
-    );
+   //** glVertexAttribPointer(
+     //   attribute_coord2d, // attribute
+       // 2,                 // number of elements per vertex, here (x,y)
+       // GL_FLOAT,          // the type of each element
+       // GL_FALSE,          // take our values as-is
+       // 0,//sizeof(struct attributes),// no extra data between each position
+//	0
+ //**   );**//
+
+
+
     /* Push each element in buffer_vertices to the vertex shader */
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    glDisableVertexAttribArray(attribute_coord2d);
+  //  glDisableVertexAttribArray(attribute_coord2d);
     glutSwapBuffers();
 }
 
@@ -154,7 +138,7 @@ int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA|GLUT_ALPHA|GLUT_DOUBLE|GLUT_DEPTH);
     glutInitWindowSize(640, 480);
-    glutCreateWindow("Beta2");
+    glutCreateWindow("Custom Triangle");
 
     GLenum glew_status = glewInit();
     if (glew_status != GLEW_OK) {

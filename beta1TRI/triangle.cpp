@@ -114,7 +114,7 @@ int init_resources()
     ogl_versionck();
     makeBuffer();
     attachShaders();
-    createAttributes();
+ //   createAttributes();
     return 0;
 }
 
