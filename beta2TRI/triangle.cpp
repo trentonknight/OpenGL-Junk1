@@ -24,7 +24,7 @@ void free_resources();
 
 
 GLuint program;
-GLint attribute_coord2d, attribute_v_color;
+GLint attribute_coord2d, attribute_v_color, vPosition;
 GLuint buffer;
 
 int ogl_versionck()
@@ -107,23 +107,23 @@ void onDisplay()
     //attribute stuff
     //call on buffered triangle
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    //glEnableVertexAttribArray(attribute_coord2d);
+    glEnableVertexAttribArray(vPosition);
     /* Describe our vertices array to OpenGL (it can't guess its format automatically) */
-   //** glVertexAttribPointer(
-     //   attribute_coord2d, // attribute
-       // 2,                 // number of elements per vertex, here (x,y)
-       // GL_FLOAT,          // the type of each element
-       // GL_FALSE,          // take our values as-is
-       // 0,//sizeof(struct attributes),// no extra data between each position
-//	0
- //**   );**//
+    glVertexAttribPointer(
+        vPosition, // attribute
+        2,                 // number of elements per vertex, here (x,y)
+        GL_FLOAT,          // the type of each element
+        GL_FALSE,          // take our values as-is
+        0,//sizeof(struct attributes),// no extra data between each position
+	0
+    );
 
 
 
     /* Push each element in buffer_vertices to the vertex shader */
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-  //  glDisableVertexAttribArray(attribute_coord2d);
+    glDisableVertexAttribArray(vPosition);
     glutSwapBuffers();
 }
 
